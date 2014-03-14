@@ -60,6 +60,52 @@ class eZImageEZP21324Test extends ezpDatabaseTestCase
      * - given than an original image object is created with an image file,
      * - given that the original image object is edited, and the image is not changed
      * - given that a copy of the image object is done
+     * - removing the original object won't remove the copy's image files
+     */
+    public function testRemoveOriginalDoesntDeleteCopyFiles()
+    {
+        $originalImageObject = $this->createImage( "Original image" );
+        $originalImageObject = $this->createNewVersion( $originalImageObject );
+        $originalImageDataMap = $originalImageObject->fetchDataMap();
+
+        /** @var eZImageAliasHandler $originalImageAliasHandler */
+        $originalImageAliasHandler = $originalImageDataMap['image']->attribute( 'content' );
+
+        $copyImage = $this->createCopy( $originalImageObject );
+        $copyImageDataMap = $copyImage->fetchDataMap();
+        /** @var eZImageAliasHandler $originalImageAliasHandler */
+        $copyImageAliasHandler = $copyImageDataMap['image']->attribute( 'content' );
+
+        foreach ( $originalImageAliasHandler->aliasList() as $alias )
+        {
+            self::assertFileExists( $alias['full_path'] );
+        }
+
+        foreach ( $copyImageAliasHandler->aliasList() as $alias )
+        {
+            self::assertFileExists( $alias['full_path'] );
+        }
+
+        $this->removeObject( $originalImageObject );
+
+        // image files from the original no longer exist ? @TODO validate
+        foreach ( $originalImageAliasHandler->aliasList() as $alias )
+        {
+            self::assertImageFileNotExists( $originalImageDataMap['image']->attribute( 'id' ), $alias['full_path'] );
+        }
+
+        // image files from the copy still exist
+        foreach ( $copyImageAliasHandler->aliasList() as $alias )
+        {
+            self::assertImageFileExists( $copyImageDataMap['image']->attribute( 'id' ), $alias['full_path'] );
+        }
+    }
+
+    /**
+     * Tests that:
+     * - given than an original image object is created with an image file,
+     * - given that the original image object is edited, and the image is not changed
+     * - given that a copy of the image object is done
      * - removing the copy of the image object won't delete the image files used by the original image object
      */
     public function testRemoveCopy()
