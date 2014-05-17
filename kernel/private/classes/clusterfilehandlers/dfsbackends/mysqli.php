@@ -166,11 +166,7 @@ class eZDFSFileHandlerMySQLiBackend implements eZClusterEventNotifier
         /*if ( !mysql_select_db( self::$dbparams['dbname'], $this->db ) )
             throw new eZClusterHandlerDBNoDatabaseException( self::$dbparams['dbname'] );*/
 
-        // DFS setup
-        if ( $this->dfsbackend === null )
-        {
-            $this->dfsbackend = new eZDFSFileHandlerDFSBackend();
-        }
+        $this->initDFSBackend();
 
         $charset = trim( $siteINI->variable( 'DatabaseSettings', 'Charset' ) );
         if ( $charset === '' )
@@ -187,6 +183,26 @@ class eZDFSFileHandlerMySQLiBackend implements eZClusterEventNotifier
         }
     }
 
+    /**
+     * Initializes {@see self::$dfsBackend} based eZDFSClusteringSettings.DFSBackend
+     */
+    private function initDFSBackend()
+    {
+        $dfsBackend = eZINI::instance( 'file.ini' )->variable( 'eZDFSClusteringSettings', 'DFSBackend' );
+        if ( !class_exists( $dfsBackend ) )
+        {
+            throw new InvalidArgumentException( "Invalid DFSBackend class $dfsBackend. Were autoloads generated ?" );
+        }
+
+        if ( $dfsBackend instanceof eZDFSFileHandlerFactoryDFSBackendInterface )
+        {
+            $this->dfsbackend = $dfsBackend::factory();
+        }
+        else
+        {
+            $this->dfsbackend = new $dfsBackend();
+        }
+    }
     /**
      * Disconnects the handler from the database
      */
@@ -1961,7 +1977,7 @@ class eZDFSFileHandlerMySQLiBackend implements eZClusterEventNotifier
 
     /**
      * Distributed filesystem backend
-     * @var eZDFSFileHandlerDFSBackend
+     * @var eZDFSFileHandlerDFSBackendInterface
      */
     protected $dfsbackend = null;
 

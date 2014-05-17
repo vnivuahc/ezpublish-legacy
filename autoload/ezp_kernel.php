@@ -121,6 +121,7 @@ return array(
       'eZDBTool'                                           => 'lib/ezdb/classes/ezdbtool.php',
       'eZDFSFileHandler'                                   => 'kernel/private/classes/clusterfilehandlers/ezdfsfilehandler.php',
       'eZDFSFileHandlerDFSBackend'                         => 'kernel/private/classes/clusterfilehandlers/dfsbackends/dfs.php',
+      'eZDFSFileHandlerDFSBackendInterface'                => 'kernel/private/classes/clusterfilehandlers/dfsbackends/ezdfsfilehandlerdfsbackendinterface.php',
       'eZDFSFileHandlerMySQLiBackend'                      => 'kernel/private/classes/clusterfilehandlers/dfsbackends/mysqli.php',
       'eZDFSFileHandlerNFSMountPointNotFoundException'     => 'kernel/private/classes/exceptions/cluster/mount_point_not_found.php',
       'eZDFSFileHandlerNFSMountPointNotWriteableException' => 'kernel/private/classes/exceptions/cluster/mount_point_not_writeable.php',
@@ -590,7 +591,6 @@ return array(
       'ezpContentSortingCriteria'                          => 'kernel/private/api/content/criteria/sorting.php',
       'ezpContentXHTMLRenderer'                            => 'kernel/private/rest/classes/renderers/xhtml_content_renderer.php',
       'ezpDatabaseBasedClusterFileHandler'                 => 'kernel/private/interfaces/ezpdatabasebasedclusterfilehandler.php',
-      'ezpDbMySQLiClusterGateway'                          => 'kernel/clustering/dbmysqli.php',
       'ezpDfsMySQLiClusterGateway'                         => 'kernel/clustering/dfsmysqli.php',
       'ezpEvent'                                           => 'kernel/private/classes/ezpevent.php',
       'ezpExtension'                                       => 'kernel/private/classes/ezpextension.php',
@@ -709,7 +709,7 @@ return array(
       'ezpTopologicalSortNode'                             => 'kernel/private/classes/ezptopologicalsortnode.php',
       'ezpUpdatedContent'                                  => 'kernel/private/rest/classes/sync/updates.php',
       'ezpUserNotFoundException'                           => 'kernel/private/rest/classes/exceptions/user_not_found.php',
-      'ezpWebBasedKernelHandler'                          => 'kernel/private/interfaces/ezpwebbasedkernelhandler.php',
+      'ezpWebBasedKernelHandler'                           => 'kernel/private/interfaces/ezpwebbasedkernelhandler.php',
     );
 
 ?>
