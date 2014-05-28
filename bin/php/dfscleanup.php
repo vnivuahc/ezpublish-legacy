@@ -154,54 +154,29 @@ if ( $checkDFS )
     }
 
     $dfsBackend = new eZDFSFileHandlerDFSBackend();
-    $base = realpath( $dfsBackend->getMountPoint() );
-    $cleanPregExpr = preg_quote( fixWinPath( $base ), '@' );
-    foreach (
-        new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator( $base . '/' . $checkPath )
-        ) as $filename => $current )
+    foreach ( $dfsBackend->getFilesList( $checkPath ) as $filePathName )
     {
-        if ( $current->isFile() )
+        try
         {
-            $relativePath = trim( preg_replace( '@^' . $cleanPregExpr . '@', '', fixWinPath( $filename ) ), '/' );
-            try
+            if ( !$fileHandler->fileExists( $filePathName ) )
             {
-                if ( !$fileHandler->fileExists( $relativePath ) )
+                $cli->output( '  - ' . $filePathName );
+                if ( $delete )
                 {
-                    $cli->output( '  - ' . $relativePath );
-                    if ( $delete )
-                    {
-                        unlink( $filename );
-                    }
+                    unlink( $filename );
                 }
             }
-            catch ( Exception $e )
-            {
-                abort( "Database error, aborting.\n" . $e->getMessage() );
-            }
-            usleep( $pause );
         }
+        catch ( Exception $e )
+        {
+            abort( "DFS Backend error, aborting.\n" . $e->getMessage() );
+        }
+        usleep( $pause );
     }
     $cli->output( 'Done' );
 }
 
 $script->shutdown();
-
-/**
- * Replaces backslashes in $path with forward slashes.
- *
- * Clustering only references path using forward slashes. This makes sure input path are consistent
- *
- * @param string $path The path to update
- * @return string The modified path.
- */
-function fixWinPath( $path )
-{
-    if ( DIRECTORY_SEPARATOR == '\\' )
-        return str_replace( '\\', '/', $path );
-    else
-        return $path;
-}
 
 /**
  * Checks that the NFS share is still available.

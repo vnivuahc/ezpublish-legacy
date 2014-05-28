@@ -361,6 +361,27 @@ class eZDFSFileHandlerDFSBackend implements eZDFSFileHandlerDFSBackendInterface
     }
 
     /**
+     * Returns an iterator over the files within $basePath on the backend
+     *
+     * @param string $basePath a path relative to the mount point
+     *
+     * @return Iterator An iterator that returns a DFS File pathname as the value
+     */
+    public function getFilesList( $basePath )
+    {
+        // The custom iterator filters out the file path in order to get a relative one
+        return new eZDFSFileHandlerDFSBackendFilterIterator(
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                    $this->mountPointPath . '/' . $basePath,
+                    FilesystemIterator::SKIP_DOTS|FilesystemIterator::UNIX_PATHS
+                )
+            ),
+            $this->mountPointPath
+        );
+    }
+
+    /**
      * Path to the local distributed filesystem mount point
      * @var string
      */

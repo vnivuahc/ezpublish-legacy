@@ -203,6 +203,7 @@ class eZDFSFileHandlerMySQLiBackend implements eZClusterEventNotifier
             $this->dfsbackend = new $dfsBackend();
         }
     }
+
     /**
      * Disconnects the handler from the database
      */

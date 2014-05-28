@@ -121,4 +121,13 @@ interface eZDFSFileHandlerDFSBackendInterface
      * @return int
      */
     public function getDfsFileSize( $filePath );
+
+    /**
+     * Returns an iterator over the files within $path on the backend
+     *
+     * @param string $basePath a path relative to the mount point
+     *
+     * @return Iterator An iterator that returns a DFS File pathname as the value
+     */
+    public function getFilesList( $basePath );
 }
