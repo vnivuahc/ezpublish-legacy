@@ -54,7 +54,7 @@ interface eZDFSFileHandlerDFSBackendInterface
     public function copyToDFS( $srcFilePath, $dstFilePath = false );
 
     /**
-     * Deletes one or more files from DFS
+     * Deletes one or more files
      *
      * @param string|array $filePath Single local filename, or array of local filenames
      *
@@ -75,7 +75,7 @@ interface eZDFSFileHandlerDFSBackendInterface
     public function passthrough( $filePath, $startOffset = 0, $length = false );
 
     /**
-     * Returns the binary content of $filePath from DFS
+     * Returns the binary content of $filePath
      *
      * @param string $filePath local file path
      *
@@ -85,7 +85,7 @@ interface eZDFSFileHandlerDFSBackendInterface
     public function getContents( $filePath );
 
     /**
-     * Creates the file $filePath on DFS with content $contents
+     * Creates $filePath with content $contents
      *
      * @param string $filePath
      * @param binary $contents
@@ -95,7 +95,7 @@ interface eZDFSFileHandlerDFSBackendInterface
     public function createFileOnDFS( $filePath, $contents );
 
     /**
-     * Renamed DFS file $oldPath to DFS file $newPath
+     * Renamed $oldPath to $newPath
      *
      * @param string $oldPath
      * @param string $newPath
@@ -114,16 +114,9 @@ interface eZDFSFileHandlerDFSBackendInterface
     public function existsOnDFS( $filePath );
 
     /**
-     * Returns the mount point
+     * Returns the size in bytes of $filePath
      *
-     * @return string
-     */
-    public function getMountPoint();
-
-    /**
-     * Returns size of a file in the DFS backend, from a relative path.
-     *
-     * @param string $filePath The relative file path we want to get size of
+     * @param string $filePath
      *
      * @return int
      */

@@ -287,7 +287,7 @@ class eZDFSFileHandlerDFSBackend implements eZDFSFileHandlerDFSBackendInterface
      *
      * @return string
      */
-    public function getMountPoint()
+    protected function getMountPoint()
     {
         return $this->mountPointPath;
     }
