@@ -5,7 +5,29 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributd with this source code.
  * @version //autogentag//
- */class eZDFSFileHandlerBackendFactory
+ */
+
+/**
+ * Instantiates the DFSBackend based on INI settings
+ */
+class eZDFSFileHandlerBackendFactory
 {
 
+    public static function build()
+    {
+        $dfsBackend = eZINI::instance( 'file.ini' )->variable( 'eZDFSClusteringSettings', 'DFSBackend' );
+        if ( !class_exists( $dfsBackend ) )
+        {
+            throw new InvalidArgumentException( "Invalid DFSBackend class $dfsBackend. Were autoloads generated ?" );
+        }
+
+        if ( $dfsBackend instanceof eZDFSFileHandlerFactoryDFSBackendInterface )
+        {
+            return $dfsBackend::factory();
+        }
+        else
+        {
+            return new $dfsBackend();
+        }
+    }
 }
