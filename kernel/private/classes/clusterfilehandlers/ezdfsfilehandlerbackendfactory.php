@@ -13,6 +13,9 @@
 class eZDFSFileHandlerBackendFactory
 {
 
+    /**
+     * @return eZDFSFileHandlerDFSBackendInterface
+     */
     public static function build()
     {
         $dfsBackend = eZINI::instance( 'file.ini' )->variable( 'eZDFSClusteringSettings', 'DFSBackend' );
