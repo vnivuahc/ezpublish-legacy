@@ -16,13 +16,6 @@
 interface eZDFSFileHandlerDFSBackendInterface
 {
     /**
-     * Checks if $path is supported by this handler
-     * @param string $path
-     * @return bool
-     */
-    public function supports( $path );
-
-    /**
      * Creates a copy of $srcFilePath from DFS to $dstFilePath on DFS
      *
      * @param string $srcFilePath Local source file path
