@@ -21,7 +21,7 @@ class eZDFSFileHandlerBackendFactory
             throw new InvalidArgumentException( "Invalid DFSBackend class $dfsBackend. Were autoloads generated ?" );
         }
 
-        if ( $dfsBackend instanceof eZDFSFileHandlerFactoryDFSBackendInterface )
+        if ( is_a( $dfsBackend, 'eZDFSFileHandlerFactoryDFSBackendInterface', true ) )
         {
             return $dfsBackend::factory();
         }
