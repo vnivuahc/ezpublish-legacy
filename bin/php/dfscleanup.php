@@ -183,6 +183,8 @@ $script->shutdown();
  *
  * Does so by verifying that $path does exist within the NFS mount point path + $rootPath
  * @return true
+ *
+ * @todo Replace with exceptions in DFS Backends that are thrown when the backend isn't available.
  */
 function checkNFS( $rootPath )
 {
