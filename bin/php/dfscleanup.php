@@ -78,8 +78,6 @@ if ( $delete &&  $checkDFS )
 
 $cli->output( 'Performing cleanup on directory <' . $checkPath . '>.' );
 
-checkNFS( $checkPath );
-
 if ( $checkBase )
 {
     if ( $delete )
@@ -113,7 +111,6 @@ if ( $checkBase )
                 if ( !$fh->exists( true ) )
                 {
                     $cli->output( '  - ' . $fh->name() );
-                    checkNFS( $checkPath );
 
                     // expire the file, and purge it
                     if ( $delete )
@@ -123,9 +120,13 @@ if ( $checkBase )
                     }
                 }
             }
+            catch ( eZDFSFileHandlerDFSBackendException $e )
+            {
+                abort( "DFS FS backend error, aborting.\n" . $e->getMessage() );
+            }
             catch ( Exception $e )
             {
-                abort( "Database error, aborting.\n" . $e->getMessage() );
+                abort( "DFS DB backend error, aborting.\n" . $e->getMessage() );
             }
             usleep( $pause );
         }
@@ -163,7 +164,7 @@ if ( $checkDFS )
                 $cli->output( '  - ' . $filePathName );
                 if ( $delete )
                 {
-                    unlink( $filename );
+                    unlink( $filePathName );
                 }
             }
         }
@@ -177,30 +178,6 @@ if ( $checkDFS )
 }
 
 $script->shutdown();
-
-/**
- * Checks that the NFS share is still available.
- *
- * Does so by verifying that $path does exist within the NFS mount point path + $rootPath
- * @return true
- *
- * @todo Replace with exceptions in DFS Backends that are thrown when the backend isn't available.
- */
-function checkNFS( $rootPath )
-{
-    static $path = false;
-
-    if ( !$path )
-    {
-        $dfsBackend = new eZDFSFileHandlerDFSBackend();
-        $path = realpath( $dfsBackend->getMountPoint() ). '/' . $rootPath;
-    }
-
-    if ( !file_exists( $path ) || !is_dir( $path ) )
-    {
-        abort( "DFS mount seems to be gone, aborting" );
-    }
-}
 
 function abort( $message )
 {

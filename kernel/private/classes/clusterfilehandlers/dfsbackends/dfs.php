@@ -271,7 +271,20 @@ class eZDFSFileHandlerDFSBackend implements eZDFSFileHandlerDFSBackendInterface
      */
     public function existsOnDFS( $filePath )
     {
-        return file_exists( $this->makeDFSPath( $filePath ) );
+        if ( file_exists( $this->makeDFSPath( $filePath ) ) )
+        {
+            return true;
+        }
+
+        // Verify that mount point is still there
+        $filePathDir = substr( $filePath, 0, strpos( $filePath, '/' ) + 1 );
+        $path = realpath( $this->getMountPoint() ). '/' . $filePathDir;
+        if ( !file_exists( $path ) || !is_dir( $path ) )
+        {
+            throw new eZDFSFileHandlerBackendException( "NFS mount root $path not found" );
+        }
+
+        return false;
     }
 
     /**

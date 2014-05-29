@@ -120,6 +120,7 @@ return array(
       'eZDBSchemaInterface'                                => 'lib/ezdbschema/classes/ezdbschemainterface.php',
       'eZDBTool'                                           => 'lib/ezdb/classes/ezdbtool.php',
       'eZDFSFileHandler'                                   => 'kernel/private/classes/clusterfilehandlers/ezdfsfilehandler.php',
+      'eZDFSFileHandlerBackendException'                   => 'kernel/private/classes/clusterfilehandlers/dfsbackends/ezdfsfilehandlerbackendexception.php',
       'eZDFSFileHandlerBackendFactory'                     => 'kernel/private/classes/clusterfilehandlers/ezdfsfilehandlerbackendfactory.php',
       'eZDFSFileHandlerDFSBackend'                         => 'kernel/private/classes/clusterfilehandlers/dfsbackends/dfs.php',
       'eZDFSFileHandlerDFSBackendFilterIterator'           => 'kernel/private/classes/clusterfilehandlers/dfsbackends/dfs_filter_iterator.php',
